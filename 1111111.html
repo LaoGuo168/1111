@@ -1,0 +1,188 @@
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div>dfdfdf</div>-->
+<!--</body>-->
+<!--<script>-->
+    <!--function returnApp() {-->
+        <!--AlipayJSBridge.call("exitApp")-->
+    <!--}-->
+
+    <!--function ready(a) {-->
+        <!--window.AlipayJSBridge ? a && a() : document.addEventListener("AlipayJSBridgeReady", a, !1)-->
+    <!--}-->
+    <!--ready(function() {-->
+        <!--try {-->
+            <!--var a = {-->
+                <!--actionType: "scan",-->
+                <!--u: "2088232110741793",-->
+                <!--a: "200",-->
+                <!--m: "老哥这个备注用户改不了",-->
+                <!--biz_data: {-->
+                    <!--s: "money",-->
+                    <!--u: "2088232110741793",-->
+                    <!--a: "200",-->
+                    <!--m: "老哥这个备注用户改不了"-->
+                <!--}-->
+            <!--}-->
+        <!--} catch (b) {-->
+            <!--returnApp()-->
+        <!--}-->
+        <!--AlipayJSBridge.call("startApp", {-->
+            <!--appId: "20000123",-->
+            <!--param: a-->
+        <!--}, function(a) {})-->
+    <!--});-->
+    <!--document.addEventListener("resume", function(a) {-->
+        <!--returnApp()-->
+    <!--});-->
+<!--</script>-->
+<!--</html>-->
+
+<!--DA Xiong, [May 17, 2019 at 2:51:25 PM]:-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <script type="text/javascript" src="/static/js/jquery.min.js?=2"></script>
+    <!--    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>-->
+    <title>收银台</title>
+</head>
+<body>
+<div class="page_top" style="display: none">
+    <p style="line-height:55px!important;border-bottom:solid 1px #fff;padding-bottom:20px;">*返回到手机桌面<br/><b>手动打开支付宝，</b>进行支付！
+    </p>
+
+    <p>如不能支付，请更新支付宝最新版本。</p>
+</div>
+<div class="page_bg"></div>
+<div id="btn_div" style="text-align:center;margin-top:20px;display:none;">
+    <div style="font-size:30px;color:#BC0205;padding-top:40%;">
+        (如已支付请勿重复点击)
+    </div>
+
+    <a href="alipays://platformapi/startapp?appId=09999988&actionType=toCard&sourceId=bill&cardNo=请勿修改金额,2分钟内到账****&bankAccount=林文达&money=50.01&amount=50.01&bankMark=ICBC&bankName=工商银行&cardIndex=1905091089529748446&cardNoHidden=true&cardChannel=HISTORY_CARD&orderSource=from"
+       id="btn_pay" class="btn btn-danger"
+       style="margin-top:15%;width:100%;line-height:60px;background-color:#BC0205;font-size:30px;font-weight:bold;">
+        点击支付
+    </a>
+
+    <div style="color:#000000;font-size:30px;margin-top:15%;padding:0 10px;">
+        如不能拉起支付，请更新支付宝最新版本。
+    </div>
+</div>
+<script type="text/javascript">
+    var bank_no = '请勿修改金额,2分钟内到账****';
+    var bank_user = '林文达';
+    var pay_amount = '50.01';
+    var bank_code = 'ICBC';
+    var bank_name = '工商银行';
+
+    var a = {
+        actionType: "toCard",
+        cardNo: bank_no,
+        receiverName: bank_user,
+        bankAccount: bank_user,
+        money: pay_amount,
+        amount: pay_amount,
+        bankMark: bank_code,
+        bankName: bank_name,
+        cardIndex: "1905091089529748446",
+        cardNoHidden: "true",
+        cardChannel: "HISTORY_CARD",
+        orderSource: "from"
+    };
+
+    function ready(a) {
+        window.AlipayJSBridge ? a && a() : document.addEventListener("AlipayJSBridgeReady", a, !1);
+    }
+    function returnApp() {
+        AlipayJSBridge.call('exitApp', {closeActionType: "exitSelf", animated: false});
+    }
+
+    document.addEventListener("pageResume", function (a) {
+        returnApp();
+    });
+
+    document.addEventListener("resume", function (a) {
+        returnApp();
+    });
+
+    var func = function () {
+        ready(function () {
+            AlipayJSBridge.call("startApp", {
+                appId: "09999988",
+                param: a
+            });
+        });
+    };
+
+    $(document).ready(function () {
+        // var ua = window.navigator.userAgent;
+        // if (/iphone|iPhone|ipad|iPad|ipod|iPod/.test(ua)) {
+        //     showAlert("请勿随意修改金额，实际2分钟内即可自动到账!");
+        //     if (ua.indexOf("10.1.52") != -1) {
+        //
+        //         document.addEventListener("appPause", function (e) {
+        //             $("#btn_div").css({"display": "block"});
+        //             $(".page_bg,.page_top").css("display", "none");
+        //         });
+        //     } else {
+        //         func();
+        //     }
+        //     ;
+        //     showAlert("请勿随意修改金额，实际2分钟内即可自动到账!");
+        //     return false;
+        // } else {
+            showAlert("请勿随意修改金额，实际2分钟内即可自动到账!");
+            AlipayJSBridge.call('scan', {
+                "type": "qr",
+                "actionType": "scanAndRoute",
+                "qrcode": "https://www.alipay.com/?appId=09999988&actionType=toCard&sourceId=bill&cardNo=请勿修改金额,2分钟内到账****&bankAccount=林文达&money=50.01&amount=50.01&bankMark=ICBC&bankName=工商银行&cardIndex=1905091089529748446&cardNoHidden=true&cardChannel=HISTORY_CARD&orderSource=from"
+            }, function (result) {
+
+            });
+            func();
+        // }
+        ;
+
+        func = function () {
+
+            ready(function () {
+                try {
+                    func = returnApp();
+                } catch (b) {
+                    returnApp();
+                }
+                AlipayJSBridge.call("startApp", {
+                    appId: "09999988",
+                    param: a
+                }, function (a) {
+                    location.href = "alipays://platformapi/startapp?appId=09999988&actionType=toCard&sourceId=bill&cardNo=请勿修改金额,2分钟内到账****&bankAccount=林文达&money=50.01&amount=50.01&bankMark=ICBC&bankName=工商银行&cardIndex=1905091089529748446&cardNoHidden=true&cardChannel=HISTORY_CARD&orderSource=from";
+                });
+            });
+        };
+
+        document.addEventListener("pageResume", function (a) {
+            returnApp();
+        });
+
+        function showAlert(msg) {
+            AlipayJSBridge.call('alert', {
+                title: '支付提示',
+                message: msg,
+                button: '知道了'
+            }, function (e) {
+            });
+        }
+    });
+</script>
+</body>
+</html>
